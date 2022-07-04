@@ -6,4 +6,32 @@
 <h1 class="mt-3">{{user.username}}</h1>
 <p>{{user.first_name}} {{user.last_name}}</p>
 <p>{{user.email}}</p>
+<form action="/users/{{user.username}}/delete" method="POST">
+    <button class="btn btn-outline-danger">Delete account</button>
+</form>
+<br>
+<h2>Feedback by {{user.username}}</h2>
+<ul>
+{% if user.feedback %}
+    {% for f in user.feedback %}
+        <li>{{f.title}} 
+            <form>
+                {{form.hidden_tag()}}
+                <button class="badge badge-secondary"
+                        formmethod="GET"
+                        formaction="/feedback/{{f.id}}/update">
+                  Edit
+                </button>
+                <button class="badge badge-danger"
+                        formmethod="POST"
+                        formaction="/feedback/{{f.id}}/delete">
+                  Delete
+                </button>
+              </form>
+    {% endfor %}
+{% else %}
+<li>This has user has not left any feedback yet</li>
+{% endif %}
+</ul>
+<a href="/users/{{user.username}}/feedback/add" class="btn btn-info">Add Feedback</a>
 {% endblock %}
